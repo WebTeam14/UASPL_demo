@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://WebTeam14.github.io/UASPL_demo",
+  "homepage": "https://github.com/WebTeam14/UASPL_demo",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
