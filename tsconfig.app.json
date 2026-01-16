@@ -26,5 +26,9 @@
       "@/*": ["./src/*"]
     }
   },
+<<<<<<< HEAD
   "include": ["src"]
+=======
+  "include": ["src", "public/RCCChecklist.tsx"]
+>>>>>>> 89a3e2f (Updated UI and latest fixes)
 }
