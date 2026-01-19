@@ -45,13 +45,6 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { materials } from '@/data/mockData';
 import { Material } from '@/types/modules';
 
@@ -67,6 +60,7 @@ export default function MaterialsModule() {
   useEffect(() => {
     localStorage.setItem('uaspl-materials', JSON.stringify(materialsList));
   }, [materialsList]);
+
   const canManageStatus = user?.role === 'admin' || user?.role === 'project admin' || user?.role === 'engineer';
   const [newMaterial, setNewMaterial] = useState<Partial<Material>>({
     name: '',
@@ -127,7 +121,6 @@ export default function MaterialsModule() {
   };
 
   const lowStockCount = materialsList.filter(m => m.quantity <= m.minStock).length;
-  const totalValue = 2450000; // Mock total value
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -402,7 +395,6 @@ export default function MaterialsModule() {
                             <Plus className="w-4 h-4 mr-2" />
                             Add Stock
                           </DropdownMenuItem>
-
                           {canManageStatus && (
                             <>
                               <DropdownMenuItem onClick={() => handleStatusChange(material.id, 'approved')} className="text-success">
@@ -419,7 +411,6 @@ export default function MaterialsModule() {
                               </DropdownMenuItem>
                             </>
                           )}
-
                           <DropdownMenuItem className="text-destructive">
                             <Trash2 className="w-4 h-4 mr-2" />
                             Delete

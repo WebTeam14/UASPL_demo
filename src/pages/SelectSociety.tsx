@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { LogOut, Check, ChevronsUpDown } from "lucide-react";
-
+import { Search, LogOut, Check, ChevronsUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
@@ -15,7 +14,6 @@ import {
   CommandInput,
   CommandItem,
 } from "@/components/ui/command";
-
 import { useAuth } from "@/contexts/AuthContext";
 import { societies } from "@/data/mockData";
 import { Society } from "@/types/auth";

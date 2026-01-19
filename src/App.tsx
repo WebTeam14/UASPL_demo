@@ -20,9 +20,7 @@ import PlaceholderModule from "./pages/dashboard/PlaceholderModule";
 import CivilHome from "@/pages/dashboard/civil/CivilHome";
 import RCCChecklist from "@/pages/dashboard/civil/RCCChecklist";
 import RCCChecklistReview from "@/pages/dashboard/civil/RCCChecklistReview";
-
 import ComplianceDashboard from "./pages/dashboard/compliance/ComplianceDashboard";
-
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -66,6 +64,7 @@ export default function App() {
 
                 <Route path="architecture" element={<ArchitectureModule />} />
                 <Route path="materials" element={<MaterialsModule />} />
+                <Route path="compliance" element={<ComplianceDashboard />} />
 
                 {/* CIVIL */}
                 <Route path="civil">
@@ -73,8 +72,6 @@ export default function App() {
                   <Route path="rcc-checklist" element={<RCCChecklist />} />
                   <Route path="rcc-review" element={<RCCChecklistReview />} />
                 </Route>
-
-                <Route path="compliance" element={<ComplianceDashboard />} />
 
                 <Route path="tmi" element={<TMIModule />} />
                 <Route path="finance" element={<PlaceholderModule />} />

@@ -12,12 +12,8 @@ interface AuthContextType {
   user: User | null;
   selectedSociety: Society | null;
   isAuthenticated: boolean;
-  authLoading: boolean; // ✅ IMPORTANT
-  login: (
-    userId: string,
-    password: string,
-    role: UserRole
-  ) => Promise<boolean>;
+  authLoading: boolean;
+  login: (userId: string, password: string, role: UserRole) => Promise<boolean>;
   logout: () => void;
   selectSociety: (society: Society) => void;
   clearSociety: () => void;
@@ -90,13 +86,25 @@ const mockUsers: Record<string, { password: string; user: User }> = {
       assignedSocieties: ["1", "2", "3"],
     },
   },
+
+  fin001: {
+    password: "fin123",
+    user: {
+      id: "6",
+      userId: "finance001",
+      name: "Amit Joshi",
+      email: "amit.joshi@uaspl.com",
+      role: "finance",
+      assignedSocieties: ["1", "2", "3", "4", "5"],
+    },
+  },
 };
 
 /* ================= PROVIDER ================= */
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [selectedSociety, setSelectedSociety] = useState<Society | null>(null);
-  const [authLoading, setAuthLoading] = useState(true); // ✅ IMPORTANT
+  const [authLoading, setAuthLoading] = useState(true);
 
   /* 🔐 RESTORE SESSION SAFELY */
   useEffect(() => {
@@ -104,14 +112,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const storedSociety = localStorage.getItem("auth-society");
 
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch (e) {
+        console.error("Failed to parse stored user", e);
+      }
     }
 
     if (storedSociety) {
-      setSelectedSociety(JSON.parse(storedSociety));
+      try {
+        setSelectedSociety(JSON.parse(storedSociety));
+      } catch (e) {
+        console.error("Failed to parse stored society", e);
+      }
     }
 
-    setAuthLoading(false); // ✅ DONE LOADING
+    setAuthLoading(false);
   }, []);
 
   /* ================= LOGIN ================= */
@@ -165,7 +181,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         user,
         selectedSociety,
         isAuthenticated: Boolean(user),
-        authLoading, // ✅ EXPOSE
+        authLoading,
         login,
         logout,
         selectSociety,

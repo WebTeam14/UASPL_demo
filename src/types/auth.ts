@@ -1,4 +1,4 @@
-export type UserRole = 'admin' | 'engineer' | 'vendor' | 'tmi' | 'project admin';
+export type UserRole = 'admin' | 'engineer' | 'vendor' | 'tmi' | 'project admin' | 'finance';
 
 export interface User {
   id: string;
@@ -15,13 +15,12 @@ export interface Society {
   name: string;
   code: string;
   address: string;
-  status: "active" | "planning" | "completed";
+  status: 'active' | 'planning' | 'completed';
   projectCount: number;
   memberCount: number;
   lastUpdated: string;
   website?: string;
 }
-
 export interface AuthState {
   user: User | null;
   selectedSociety: Society | null;

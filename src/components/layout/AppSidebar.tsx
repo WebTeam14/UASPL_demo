@@ -11,13 +11,11 @@ import {
   ClipboardCheck,
   Wallet,
   LayoutDashboard,
-  Settings,
-  HelpCircle,
-  ChevronLeft,
   LogOut,
   Building,
   Globe,
   ChevronDown,
+  ChevronLeft,
 } from "lucide-react";
 
 import {
@@ -172,7 +170,7 @@ export function AppSidebar() {
             <SidebarMenu>
               {userModules.map((module) => {
                 const Icon = iconMap[module.icon] || Package;
-                const isActive = location.pathname === module.route;
+                const isActive = location.pathname.startsWith(module.route);
                 const hasSubItems = module.subItems && module.subItems.length > 0;
 
                 if (hasSubItems) {
@@ -185,7 +183,7 @@ export function AppSidebar() {
                     >
                       <SidebarMenuItem>
                         <CollapsibleTrigger asChild>
-                          <SidebarMenuButton tooltip={module.name}>
+                          <SidebarMenuButton tooltip={module.name} isActive={isActive}>
                             <Icon className="w-5 h-5" />
                             {!isCollapsed && <span>{module.name}</span>}
                             {!isCollapsed && (

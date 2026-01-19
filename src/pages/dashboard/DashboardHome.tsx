@@ -2,7 +2,6 @@ import {
   FolderOpen,
   Users,
   CheckCircle,
-  AlertCircle,
   Clock,
   TrendingUp,
   FileText,
@@ -15,7 +14,6 @@ import {
   dashboardStats,
   projects,
   drawings,
-  inspections,
 } from "@/data/mockData";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -157,17 +155,12 @@ export default function DashboardHome() {
           </CardHeader>
           <CardContent className="space-y-4">
             {drawings.map((d) => (
-              <div key={d.id} className="flex items-center justify-between py-2 border-b border-border last:border-0">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded bg-muted flex items-center justify-center">
-                    <FileText className="w-5 h-5 text-muted-foreground" />
-                  </div>
-                  <div>
-                    <p className="font-medium text-foreground">{d.name}</p>
-                    <p className="text-sm text-muted-foreground">
-                      v{d.version} • {d.uploadedBy}
-                    </p>
-                  </div>
+              <div key={d.id} className="flex justify-between">
+                <div>
+                  <p className="font-medium">{d.name}</p>
+                  <p className="text-sm text-muted-foreground">
+                    v{d.version} • {d.uploadedBy}
+                  </p>
                 </div>
                 <Badge
                   variant="outline"
@@ -177,36 +170,6 @@ export default function DashboardHome() {
                 </Badge>
               </div>
             ))}
-          </CardContent>
-        </Card>
-
-        {/* Quick Stats */}
-        <Card className="enterprise-card">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-base font-semibold flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-primary" />
-              Project Overview
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="p-4 rounded-lg bg-muted/50">
-                <p className="text-2xl font-bold text-foreground">₹15Cr</p>
-                <p className="text-sm text-muted-foreground">Total Budget</p>
-              </div>
-              <div className="p-4 rounded-lg bg-muted/50">
-                <p className="text-2xl font-bold text-foreground">₹6.75Cr</p>
-                <p className="text-sm text-muted-foreground">Amount Spent</p>
-              </div>
-              <div className="p-4 rounded-lg bg-muted/50">
-                <p className="text-2xl font-bold text-foreground">156</p>
-                <p className="text-sm text-muted-foreground">Society Members</p>
-              </div>
-              <div className="p-4 rounded-lg bg-muted/50">
-                <p className="text-2xl font-bold text-foreground">45%</p>
-                <p className="text-sm text-muted-foreground">Avg. Completion</p>
-              </div>
-            </div>
           </CardContent>
         </Card>
       </div>

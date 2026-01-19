@@ -1,10 +1,8 @@
 import uasplBuilding from "../assets/uasplBuilding.png";
 import uasplLogo from "../assets/uasplLogo.png";
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -15,7 +13,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
 import { useAuth } from "@/contexts/AuthContext";
 import { UserRole } from "@/types/auth";
 import { useToast } from "@/hooks/use-toast";
@@ -53,6 +50,7 @@ export default function Login() {
     { value: "engineer", label: "Engineer / Planner" },
     { value: "vendor", label: "Vendor" },
     { value: "tmi", label: "TMI" },
+    { value: "finance", label: "Finance / HR" },
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -70,7 +68,7 @@ export default function Login() {
     setIsLoading(true);
 
     try {
-      const success = await login(userId, password, role);
+      const success = await login(userId, password, role as UserRole);
 
       if (success) {
         toast({
@@ -127,7 +125,8 @@ export default function Login() {
               <Input
                 value={userId}
                 onChange={(e) => setUserId(e.target.value)}
-                className="h-12 bg-white/10 border-white/20 text-white"
+                placeholder="Enter your user ID"
+                className="h-12 bg-white/10 border-white/20 text-white placeholder:text-white/40"
                 disabled={isLoading}
               />
             </div>
@@ -139,7 +138,8 @@ export default function Login() {
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="h-12 bg-white/10 border-white/20 text-white pr-10"
+                  placeholder="Enter your password"
+                  className="h-12 bg-white/10 border-white/20 text-white placeholder:text-white/40 pr-10"
                   disabled={isLoading}
                 />
                 <button
@@ -175,7 +175,7 @@ export default function Login() {
             <Button
               type="submit"
               disabled={isLoading}
-              className="w-full h-12 bg-primary text-white font-semibold"
+              className="w-full h-12 bg-primary text-white font-semibold shadow-lg"
             >
               {isLoading ? (
                 <>
@@ -190,7 +190,7 @@ export default function Login() {
         </div>
 
         <p className="text-center text-white/40 text-xs mt-6">
-          © 2024 Urban Analysis & Solution Pvt. Ltd.
+          © 2024 Urban Analysis & Solution Pvt. Ltd. All rights reserved.
         </p>
       </div>
     </div>
