@@ -13,7 +13,11 @@ interface AuthContextType {
   selectedSociety: Society | null;
   isAuthenticated: boolean;
   authLoading: boolean;
-  login: (userId: string, password: string, role: UserRole) => Promise<boolean>;
+  login: (
+    userId: string,
+    password: string,
+    role: UserRole
+  ) => Promise<boolean>;
   logout: () => void;
   selectSociety: (society: Society) => void;
   clearSociety: () => void;
@@ -28,7 +32,7 @@ const mockUsers: Record<string, { password: string; user: User }> = {
     user: {
       id: "1",
       userId: "admin001",
-      name: "Admin",
+      name: "Super Admin",
       email: "admin@uaspl.com",
       role: "admin",
       assignedSocieties: [
@@ -46,8 +50,12 @@ const mockUsers: Record<string, { password: string; user: User }> = {
       userId: "proj001",
       name: "Project Admin",
       email: "projectadmin@uaspl.com",
-      role: "project admin",
-      assignedSocieties: ["1", "2", "3", "4", "5"],
+      role: "project_admin",
+      assignedSocieties: [
+        "1", "2", "3", "4", "5",
+        "6", "7", "8", "9", "10",
+        "11", "12", "13", "14", "15",
+      ],
     },
   },
 
@@ -63,22 +71,10 @@ const mockUsers: Record<string, { password: string; user: User }> = {
     },
   },
 
-  ven001: {
-    password: "ven123",
-    user: {
-      id: "4",
-      userId: "vendor001",
-      name: "Vendor",
-      email: "vendor@co.com",
-      role: "vendor",
-      assignedSocieties: ["1"],
-    },
-  },
-
   tmi001: {
     password: "tmi123",
     user: {
-      id: "5",
+      id: "4",
       userId: "tmi001",
       name: "TMI Officer",
       email: "tmi@uaspl.com",
@@ -87,15 +83,15 @@ const mockUsers: Record<string, { password: string; user: User }> = {
     },
   },
 
-  fin001: {
-    password: "fin123",
+  ven001: {
+    password: "ven123",
     user: {
-      id: "6",
-      userId: "finance001",
-      name: "Amit Joshi",
-      email: "amit.joshi@uaspl.com",
-      role: "finance",
-      assignedSocieties: ["1", "2", "3", "4", "5"],
+      id: "5",
+      userId: "ven001",
+      name: "Vendor",
+      email: "vendor@co.com",
+      role: "vendor",
+      assignedSocieties: ["1"],
     },
   },
 };
@@ -106,10 +102,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [selectedSociety, setSelectedSociety] = useState<Society | null>(null);
   const [authLoading, setAuthLoading] = useState(true);
 
-  /* 🔐 RESTORE SESSION SAFELY */
+  /* 🔐 RESTORE SESSION */
   useEffect(() => {
-    const storedUser = localStorage.getItem("auth-user");
-    const storedSociety = localStorage.getItem("auth-society");
+    const storedUser = sessionStorage.getItem("auth-user");
+    const storedSociety = sessionStorage.getItem("auth-society");
 
     if (storedUser) {
       try {
@@ -137,19 +133,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       password: string,
       role: UserRole
     ): Promise<boolean> => {
-      await new Promise((r) => setTimeout(r, 500));
+      await new Promise((r) => setTimeout(r, 400));
 
       const entry = mockUsers[userId];
-
       if (!entry) return false;
       if (entry.password !== password) return false;
       if (entry.user.role !== role) return false;
 
       setUser(entry.user);
-      localStorage.setItem("auth-user", JSON.stringify(entry.user));
+      sessionStorage.setItem("auth-user", JSON.stringify(entry.user));
 
       setSelectedSociety(null);
-      localStorage.removeItem("auth-society");
+      sessionStorage.removeItem("auth-society");
 
       return true;
     },
@@ -160,19 +155,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const logout = useCallback(() => {
     setUser(null);
     setSelectedSociety(null);
-    localStorage.removeItem("auth-user");
-    localStorage.removeItem("auth-society");
+    sessionStorage.clear();
   }, []);
 
   /* ================= SOCIETY ================= */
   const selectSociety = useCallback((society: Society) => {
     setSelectedSociety(society);
-    localStorage.setItem("auth-society", JSON.stringify(society));
+    sessionStorage.setItem("auth-society", JSON.stringify(society));
   }, []);
 
   const clearSociety = useCallback(() => {
     setSelectedSociety(null);
-    localStorage.removeItem("auth-society");
+    sessionStorage.removeItem("auth-society");
   }, []);
 
   return (
@@ -195,9 +189,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
 /* ================= HOOK ================= */
 export function useAuth() {
-  const context = useContext(AuthContext);
-  if (!context) {
+  const ctx = useContext(AuthContext);
+  if (!ctx) {
     throw new Error("useAuth must be used within AuthProvider");
   }
-  return context;
+  return ctx;
 }

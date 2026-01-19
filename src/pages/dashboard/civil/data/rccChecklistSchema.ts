@@ -22,6 +22,7 @@ export const RCC_SECTIONS = [
       "Bar dia & spacing as per drawing",
       "Cover blocks provided",
       "Lap length as per drawing",
+      "Development length as per drawing",
     ],
   },
   {
@@ -31,6 +32,7 @@ export const RCC_SECTIONS = [
       "Slab steel",
       "Electrical conduits",
       "Plumbing sleeves & cut-outs",
+      "Fire-fighting sleeves & cut-outs",
     ],
   },
 ];

@@ -10,50 +10,35 @@ import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/contexts/AuthContext";
 
-type ChecklistRow = {
-  section: string;
-  item: string;
-  checked: boolean;
-  remark: string;
-};
-
-export default function RCCChecklistReview() {
+export default function BlockWorkChecklistReview() {
   const { selectedSociety, user } = useAuth();
 
-  /* 🔐 Role guard */
   if (!user || (user.role !== "admin" && user.role !== "pmc")) {
-    return (
-      <p className="text-red-600 font-medium">
-        You are not authorized to review this checklist.
-      </p>
-    );
+    return <p className="text-red-600">Not authorized.</p>;
   }
 
   if (!selectedSociety) {
     return <p>No society selected.</p>;
   }
 
-  const storageKey = `rcc-checklist-${selectedSociety.id}`;
+  const storageKey = `block-work-${selectedSociety.id}`;
   const raw = localStorage.getItem(storageKey);
 
   if (!raw) {
-    return <p>No RCC checklist submitted yet.</p>;
+    return <p>No Block Work checklist submitted yet.</p>;
   }
 
   const parsed = JSON.parse(raw);
 
-  const [instructions, setInstructions] = useState<string>(
+  const [status, setStatus] = useState(parsed.status || "submitted");
+  const [instructions, setInstructions] = useState(
     parsed.instructions || ""
   );
-  const [status, setStatus] = useState<
-    "draft" | "submitted" | "approved" | "rejected"
-  >(parsed.status);
 
-  const checklist: ChecklistRow[] = parsed.checklist || [];
+  const checklist = parsed.checklist || [];
 
-  /* ✅ Update status (NO page reload) */
   const handleDecision = (newStatus: "approved" | "rejected") => {
-    const updatedPayload = {
+    const updated = {
       ...parsed,
       status: newStatus,
       reviewedBy: {
@@ -65,58 +50,52 @@ export default function RCCChecklistReview() {
       instructions,
     };
 
-    localStorage.setItem(storageKey, JSON.stringify(updatedPayload));
+    localStorage.setItem(storageKey, JSON.stringify(updated));
     setStatus(newStatus);
   };
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">RCC Checklist Review</h1>
+        <h1 className="text-2xl font-bold">
+          Block Work Checklist Review
+        </h1>
         <Badge variant="outline">{status.toUpperCase()}</Badge>
       </div>
 
-      {/* 🔹 Checklist Summary */}
-      {checklist.map((row, index) => (
-        <Card key={index}>
+      {checklist.map((row: any, i: number) => (
+        <Card key={i}>
           <CardHeader>
             <CardTitle>{row.section}</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-1 text-sm">
-            <p>
-              <b>Item:</b> {row.item}
-            </p>
+          <CardContent className="text-sm space-y-1">
+            <p><b>Item:</b> {row.item}</p>
             <p>
               <b>Checked:</b>{" "}
-              <span
-                className={row.checked ? "text-green-600" : "text-red-600"}
-              >
-                {row.checked ? "YES" : "NO"}
-              </span>
+              {row.checked ? "YES" : "NO"}
             </p>
             <p>
-              <b>Engineer Remark:</b> {row.remark || "-"}
+              <b>Engineer Remark:</b>{" "}
+              {row.remark || "-"}
             </p>
           </CardContent>
         </Card>
       ))}
 
-      {/* 📝 PMC Instructions (matches Site Visit Report) */}
       <Card>
         <CardHeader>
-          <CardTitle>PMC / Site Instructions</CardTitle>
+          <CardTitle>PMC Instructions</CardTitle>
         </CardHeader>
         <CardContent>
           <Textarea
             value={instructions}
             onChange={(e) => setInstructions(e.target.value)}
-            placeholder="Enter PMC observations / site instructions"
             disabled={status !== "submitted"}
+            placeholder="Site instructions / observations"
           />
         </CardContent>
       </Card>
 
-      {/* ✅ Approval Actions */}
       {status === "submitted" && (
         <div className="flex justify-end gap-3">
           <Button
@@ -129,19 +108,6 @@ export default function RCCChecklistReview() {
             Approve
           </Button>
         </div>
-      )}
-
-      {/* 🔒 Final Message */}
-      {status === "approved" && (
-        <p className="text-green-600 font-medium">
-          ✔ RCC Checklist approved and locked.
-        </p>
-      )}
-
-      {status === "rejected" && (
-        <p className="text-red-600 font-medium">
-          ✖ RCC Checklist rejected. Engineer must revise.
-        </p>
       )}
     </div>
   );

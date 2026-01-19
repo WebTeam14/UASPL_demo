@@ -1,8 +1,10 @@
 import uasplBuilding from "../assets/uasplBuilding.png";
 import uasplLogo from "../assets/uasplLogo.png";
+
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,6 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+
 import { useAuth } from "@/contexts/AuthContext";
 import { UserRole } from "@/types/auth";
 import { useToast } from "@/hooks/use-toast";
@@ -45,12 +48,11 @@ export default function Login() {
   }
 
   const roles: { value: UserRole; label: string }[] = [
-    { value: "admin", label: "Admin" },
-    { value: "project admin", label: "Project Admin" },
-    { value: "engineer", label: "Engineer / Planner" },
+    { value: "admin", label: "Super Admin" },
+    { value: "project_admin", label: "Project Admin" },
+    { value: "engineer", label: "Engineer" },
     { value: "vendor", label: "Vendor" },
     { value: "tmi", label: "TMI" },
-    { value: "finance", label: "Finance / HR" },
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {

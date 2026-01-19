@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import { AuthProvider } from "@/contexts/AuthContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import RoleGuard from "@/components/RoleGuard";
 
 import Login from "./pages/Login";
 import SelectSociety from "./pages/SelectSociety";
@@ -16,11 +17,14 @@ import ArchitectureModule from "./pages/dashboard/ArchitectureModule";
 import MaterialsModule from "./pages/dashboard/MaterialsModule";
 import TMIModule from "./pages/dashboard/TMIModule";
 import PlaceholderModule from "./pages/dashboard/PlaceholderModule";
-
-import CivilHome from "@/pages/dashboard/civil/CivilHome";
-import RCCChecklist from "@/pages/dashboard/civil/RCCChecklist";
-import RCCChecklistReview from "@/pages/dashboard/civil/RCCChecklistReview";
 import ComplianceDashboard from "./pages/dashboard/compliance/ComplianceDashboard";
+
+import CivilHome from "./pages/dashboard/civil/CivilHome";
+import RCCChecklist from "./pages/dashboard/civil/RCCChecklist";
+import RCCChecklistReview from "./pages/dashboard/civil/RCCChecklistReview";
+import BlockWorkChecklist from "./pages/dashboard/civil/BlockWorkChecklist";
+import BlockWorkChecklistReview from "./pages/dashboard/civil/BlockWorkChecklistReview";
+
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -41,7 +45,7 @@ export default function App() {
               {/* PUBLIC */}
               <Route path="/login" element={<Login />} />
 
-              {/* LOGIN REQUIRED */}
+              {/* SELECT SOCIETY */}
               <Route
                 path="/select-society"
                 element={
@@ -62,19 +66,39 @@ export default function App() {
               >
                 <Route index element={<DashboardHome />} />
 
+                {/* MODULES */}
                 <Route path="architecture" element={<ArchitectureModule />} />
                 <Route path="materials" element={<MaterialsModule />} />
-                <Route path="compliance" element={<ComplianceDashboard />} />
-
-                {/* CIVIL */}
-                <Route path="civil">
-                  <Route index element={<CivilHome />} />
-                  <Route path="rcc-checklist" element={<RCCChecklist />} />
-                  <Route path="rcc-review" element={<RCCChecklistReview />} />
-                </Route>
-
                 <Route path="tmi" element={<TMIModule />} />
                 <Route path="finance" element={<PlaceholderModule />} />
+                <Route path="compliance" element={<ComplianceDashboard />} />
+
+                {/* CIVIL MODULE */}
+                <Route path="civil">
+                  <Route index element={<CivilHome />} />
+
+                  {/* Engineer Screens */}
+                  <Route path="rcc-checklist" element={<RCCChecklist />} />
+                  <Route path="block-work" element={<BlockWorkChecklist />} />
+
+                  {/* Admin / PMC Review Screens */}
+                  <Route
+                    path="rcc-review"
+                    element={
+                      <RoleGuard roles={["admin", "pmc"]}>
+                        <RCCChecklistReview />
+                      </RoleGuard>
+                    }
+                  />
+                  <Route
+                    path="block-work-review"
+                    element={
+                      <RoleGuard roles={["admin", "pmc"]}>
+                        <BlockWorkChecklistReview />
+                      </RoleGuard>
+                    }
+                  />
+                </Route>
               </Route>
 
               {/* 404 */}

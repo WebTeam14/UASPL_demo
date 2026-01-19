@@ -104,7 +104,6 @@ export function AppSidebar() {
               <Building className="w-4 h-4 mt-1 text-sidebar-foreground/70" />
 
               <div className="flex-1 min-w-0">
-                {/* Society Name */}
                 <div
                   className="text-sm font-medium text-sidebar-foreground truncate cursor-pointer"
                   onClick={handleChangeSociety}
@@ -112,12 +111,10 @@ export function AppSidebar() {
                   {selectedSociety.name}
                 </div>
 
-                {/* Society Code */}
                 <div className="text-xs text-sidebar-foreground/60">
                   {selectedSociety.code}
                 </div>
 
-                {/* ✅ CLICKABLE WEBSITE LINK */}
                 {selectedSociety.website && (
                   <a
                     href={selectedSociety.website}
@@ -171,7 +168,8 @@ export function AppSidebar() {
               {userModules.map((module) => {
                 const Icon = iconMap[module.icon] || Package;
                 const isActive = location.pathname.startsWith(module.route);
-                const hasSubItems = module.subItems && module.subItems.length > 0;
+                const hasSubItems =
+                  module.subItems && module.subItems.length > 0;
 
                 if (hasSubItems) {
                   return (
@@ -183,7 +181,10 @@ export function AppSidebar() {
                     >
                       <SidebarMenuItem>
                         <CollapsibleTrigger asChild>
-                          <SidebarMenuButton tooltip={module.name} isActive={isActive}>
+                          <SidebarMenuButton
+                            tooltip={module.name}
+                            isActive={isActive}
+                          >
                             <Icon className="w-5 h-5" />
                             {!isCollapsed && <span>{module.name}</span>}
                             {!isCollapsed && (
@@ -191,6 +192,7 @@ export function AppSidebar() {
                             )}
                           </SidebarMenuButton>
                         </CollapsibleTrigger>
+
                         <CollapsibleContent>
                           <SidebarMenuSub>
                             {module.subItems?.map((subItem) => (

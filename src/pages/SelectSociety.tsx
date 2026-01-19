@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, LogOut, Check, ChevronsUpDown } from "lucide-react";
+import { LogOut, Check, ChevronsUpDown } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import {
   Popover,
@@ -14,9 +15,11 @@ import {
   CommandInput,
   CommandItem,
 } from "@/components/ui/command";
+
 import { useAuth } from "@/contexts/AuthContext";
 import { societies } from "@/data/mockData";
 import { Society } from "@/types/auth";
+
 import uasplLogo from "../assets/uasplLogo.png";
 
 export default function SelectSociety() {
@@ -27,8 +30,8 @@ export default function SelectSociety() {
   const [selectedSocietyId, setSelectedSocietyId] = useState<string>("");
   const [search, setSearch] = useState("");
 
-  const userSocieties = societies.filter((s) =>
-    user?.assignedSocieties.includes(s.id)
+  const userSocieties = societies.filter(
+    (s) => user && user.assignedSocieties.includes(s.id)
   );
 
   const selectedSociety = userSocieties.find(
@@ -158,10 +161,11 @@ export default function SelectSociety() {
                       </div>
 
                       <Check
-                        className={`ml-auto h-4 w-4 ${selectedSocietyId === society.id
+                        className={`ml-auto h-4 w-4 ${
+                          selectedSocietyId === society.id
                             ? "opacity-100"
                             : "opacity-0"
-                          }`}
+                        }`}
                       />
                     </CommandItem>
                   ))}
