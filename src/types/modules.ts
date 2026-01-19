@@ -6,7 +6,6 @@ export interface Module {
   color: string;
   route: string;
   allowedRoles: string[];
-<<<<<<< HEAD
   subItems?: {
     name: string;
     route: string;
@@ -57,7 +56,7 @@ export interface Material {
   lastUpdated: string;
   status: 'pending' | 'approved' | 'rejected';
 }
-}
+
 
 export interface Inspection {
   id: string;

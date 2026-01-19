@@ -2,7 +2,6 @@
   "compilerOptions": {
     "target": "ES2020",
     "useDefineForClassFields": true,
-<<<<<<< HEAD
     "lib": [
       "ES2020",
       "DOM",
@@ -10,16 +9,6 @@
     ],
     "module": "ESNext",
     "skipLibCheck": true,
-=======
-    "lib": [
-      "ES2020",
-      "DOM",
-      "DOM.Iterable"
-    ],
-    "module": "ESNext",
-    "skipLibCheck": true,
-
->>>>>>> 500cf89996b27152f75f31e76e80b380b7857720
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
@@ -27,17 +16,12 @@
     "moduleDetection": "force",
     "noEmit": true,
     "jsx": "react-jsx",
-<<<<<<< HEAD
-=======
-
->>>>>>> 500cf89996b27152f75f31e76e80b380b7857720
     /* Linting */
     "strict": false,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noImplicitAny": false,
     "noFallthroughCasesInSwitch": false,
-<<<<<<< HEAD
     "baseUrl": ".",
     "paths": {
       "@/*": [
@@ -46,23 +30,9 @@
     }
   },
   "include": [
-    "src"
+    "src",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.d.ts"
   ]
 }
-=======
-
-    "baseUrl": ".",
-"paths": {
-  "@/*": [
-    "./src/*"
-  ]
-}
-},
-"include": [
-"src",
-"src/**/*.ts",
-"src/**/*.tsx",
-"src/**/*.d.ts"
-]
-}
-```
