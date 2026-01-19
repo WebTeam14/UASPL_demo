@@ -33,7 +33,7 @@ export default function App() {
           <Toaster />
           <Sonner />
 
-          <BrowserRouter>
+          <BrowserRouter basename={import.meta.env.BASE_URL}>
             <Routes>
               {/* ROOT */}
               <Route path="/" element={<Navigate to="/login" replace />} />
