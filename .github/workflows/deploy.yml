@@ -16,6 +16,7 @@ jobs:
 
     env:
       ROLLUP_DISABLE_NATIVE: "1"
+      NODE_ENV: production
 
     steps:
       - name: Checkout repository
@@ -25,10 +26,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
-          cache: npm
 
-      - name: Install dependencies
-        run: npm install
+      - name: Clean install dependencies (fix Rollup bug)
+        run: |
+          rm -rf node_modules package-lock.json
+          npm install
 
       - name: Build project
         run: npm run build
