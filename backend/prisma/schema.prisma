@@ -1,0 +1,142 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/**
+ * ================= USERS =================
+ */
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   @default("user")
+  createdAt DateTime @default(now())
+
+  reviews Review[]
+  alerts  Alert[]
+  weeklyReports WeeklyReport[]
+}
+
+/**
+ * ================= SOCIETY =================
+ */
+
+model Society {
+  id         Int      @id @default(autoincrement())
+  name       String
+  code       String   @default("N/A")
+  address    String?
+  websiteUrl String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  projects        Project[]
+  civilChecklists CivilChecklist[]
+}
+
+/**
+ * ================= PROJECT =================
+ */
+
+model Project {
+  id        Int      @id @default(autoincrement())
+  name      String
+  stage     String   @default("FEASIBILITY")
+  status    String   @default("ACTIVE")
+  progress  Int      @default(0)
+  societyId Int
+  createdAt DateTime @default(now())
+
+  society Society @relation(fields: [societyId], references: [id])
+
+  tenders Tender[]
+  reviews Review[]
+  weeklyReports WeeklyReport[]
+  @@index([societyId])
+}
+
+/**
+ * ================= CIVIL CHECKLIST =================
+ */
+
+model CivilChecklist {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  status      String   @default("pending")
+  type        String
+  societyId   Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  society Society @relation(fields: [societyId], references: [id])
+
+  @@index([societyId])
+}
+
+/**
+ * ================= TENDER =================
+ */
+
+model Tender {
+  id                Int      @id @default(autoincrement())
+  projectId         Int
+  appointmentDetail String?
+  feasibilityDone   Boolean  @default(false)
+  tenderDraft       Boolean  @default(false)
+  newspaperNotice   Boolean  @default(false)
+  finalTenderDoc    Boolean  @default(false)
+  createdAt         DateTime @default(now())
+
+  project Project @relation(fields: [projectId], references: [id])
+
+  bidders Bidder[]
+
+  @@index([projectId])
+}
+
+/**
+ * ================= BIDDERS =================
+ */
+
+model Bidder {
+  id             Int      @id @default(autoincrement())
+  tenderId       Int
+  companyName    String
+  technicalScore Float?
+  financialScore Float?
+  status         String?
+  createdAt      DateTime @default(now())
+
+  tender Tender @relation(fields: [tenderId], references: [id])
+
+  @@index([tenderId])
+}
+model Vendor {
+  id          Int      @id @default(autoincrement())
+  companyName String
+  contactName String
+  email       String?
+  phone       String?
+  category    String
+  status      String   @default("active")
+  createdAt   DateTime @default(now())
+}
+model WeeklyReport {
+  id        Int      @id @default(autoincrement())
+  projectId Int
+  userId    Int
+  report    String
+  status    String   @default("pending")
+  createdAt DateTime @default(now())
+
+  project Project @relation(fields: [projectId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+}
